@@ -1,0 +1,40 @@
+import 'dart:math';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
+import 'package:graphql/client.dart';
+import 'package:graphql_example/api/country_api_client.dart';
+import 'package:graphql_example/api/models/country_code/country_code_model.dart';
+import 'package:graphql_example/api/models/country_detail/country_detail_model.dart';
+
+part 'country_state.dart';
+
+class CountryCubit extends Cubit<CountryState> {
+  CountryCubit({required CountryApiClient countryApiClient})
+      : _countryApiClient = countryApiClient,
+        super(const CountryState(countriesInfo: []));
+
+  final CountryApiClient _countryApiClient;
+
+  void getCountriesInfo() async {
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    try {
+      var countryInfos = await _countryApiClient.getCountryInfos();
+      emit(
+        state.copyWith(
+          status: FormzStatus.submissionSuccess,
+          countriesInfo: countryInfos,
+        ),
+      );
+    } on GraphQLError catch (error) {
+      emit(
+        state.copyWith(
+          status: FormzStatus.submissionFailure,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
+  }
+}

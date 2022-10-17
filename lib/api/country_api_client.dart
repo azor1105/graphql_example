@@ -18,7 +18,7 @@ class CountryApiClient {
 
   final GraphQLClient _graphQLClient;
 
-  Future<List<models.CountryCodeModel>> getJobs() async {
+  Future<List<models.CountryCodeModel>> getCountryInfos() async {
     final result = await _graphQLClient.query(
       QueryOptions(
         document: gql(queries.getAllCountryInfoQuery),
@@ -26,7 +26,6 @@ class CountryApiClient {
     );
     if (result.hasException) throw GetCountrysRequestFailure();
     final data = result.data?['countries'] as List;
-    print(data);
     return data
         .map((dynamic country) =>
             models.CountryCodeModel.fromJson(country as Map<String, dynamic>))
