@@ -5,25 +5,30 @@ import 'package:graphql_example/cubits/country_cubit/country_cubit.dart';
 import 'package:graphql_example/views/home/home_screen.dart';
 
 void main() {
-  runApp(MyApp(
-    countryApiClient: CountryApiClient.create(),
-  ));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CountryCubit(
+            countryApiClient: CountryApiClient.create(),
+          )..getCountriesInfo(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required CountryApiClient countryApiClient})
-      : _countryApiClient = countryApiClient;
-
-  final CountryApiClient _countryApiClient;
+  const MyApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-          create: (context) => CountryCubit(countryApiClient: _countryApiClient)
-            ..getCountriesInfo(),
-          child: const HomeScreen()),
+      home: HomeScreen(),
     );
   }
 }

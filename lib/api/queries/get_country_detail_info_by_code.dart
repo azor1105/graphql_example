@@ -1,6 +1,6 @@
 const String getDetailCountryInfo= r'''
-query GetDetailCountryInfo($code: String!) {
-  country(code: $code) {
+query GetDetailCountryInfo{
+  country(code: "UZ") {
     name
     native
     capital
