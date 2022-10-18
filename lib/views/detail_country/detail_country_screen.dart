@@ -22,12 +22,11 @@ class DetailCountryScreen extends StatelessWidget {
               );
             } else if (state.status == FormzStatus.submissionSuccess) {
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding:const  EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   children: [
-                    SizedBox(
-                      width: double.infinity,
+                    Expanded(
+                      flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -35,8 +34,8 @@ class DetailCountryScreen extends StatelessWidget {
                             state.detailInfoCountry!.emoji,
                             style: const TextStyle(fontSize: 100),
                           ),
-                          SizedBox(
-                            height: 120,
+                          const SizedBox(width: 40),
+                          Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,10 +43,12 @@ class DetailCountryScreen extends StatelessWidget {
                                 Text(
                                   state.detailInfoCountry!.name,
                                   style: const TextStyle(fontSize: 25),
+                                  maxLines: 2,
                                 ),
                                 Text(
                                   state.detailInfoCountry!.capital,
                                   style: const TextStyle(fontSize: 25),
+                                  maxLines: 2,
                                 ),
                               ],
                             ),
@@ -57,6 +58,7 @@ class DetailCountryScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 40),
                     Expanded(
+                      flex: 2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -38,9 +38,7 @@ class CountryApiClient {
     final result = await _graphQLClient.query(
       QueryOptions(
         document: gql(queries.getDetailCountryInfo),
-        // variables: const <String, dynamic>{
-        //   "countryCode": "UZ",
-        // },
+        variables:{"code": code},
       ),
     );
     if (result.hasException) throw GetCountrysRequestFailure();
