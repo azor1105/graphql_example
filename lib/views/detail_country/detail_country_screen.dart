@@ -14,13 +14,7 @@ class DetailCountryScreen extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<CountryCubit, CountryState>(
           builder: (context, state) {
-            if (state.status == FormzStatus.submissionInProgress) {
-              return const Center(child: CircularProgressIndicator.adaptive());
-            } else if (state.status == FormzStatus.submissionFailure) {
-              return const Center(
-                child: Text("Error occured"),
-              );
-            } else if (state.status == FormzStatus.submissionSuccess) {
+            if (state.status == FormzStatus.submissionSuccess) {
               return Padding(
                 padding:const  EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
@@ -30,9 +24,12 @@ class DetailCountryScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            state.detailInfoCountry!.emoji,
-                            style: const TextStyle(fontSize: 100),
+                          Hero(
+                            tag: state.detailInfoCountry!.emoji,
+                            child: Text(
+                              state.detailInfoCountry!.emoji,
+                              style: const TextStyle(fontSize: 100),
+                            ),
                           ),
                           const SizedBox(width: 40),
                           Expanded(

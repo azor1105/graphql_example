@@ -14,11 +14,7 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<CountryCubit, CountryState>(
           builder: (context, state) {
-            if (state.status == FormzStatus.submissionFailure) {
-              return const Center(
-                child: Text("Error ocured"),
-              );
-            } else if (state.status == FormzStatus.submissionSuccess) {
+            if (state.status == FormzStatus.submissionSuccess) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: state.countriesInfo.length,
@@ -29,20 +25,31 @@ class HomeScreen extends StatelessWidget {
                     child: Card(
                       child: ListTile(
                         onTap: () {
-                           context
+                          context
                               .read<CountryCubit>()
                               .getDetailCountryInfoByCode(
                                   code: state.countriesInfo[index].code);
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DetailCountryScreen(),
-                            ),
-                          );
+                              context,
+                              PageRouteBuilder(
+                                  transitionDuration:
+                                      const Duration(seconds: 1),
+                                  reverseTransitionDuration:
+                                      const Duration(seconds: 1),
+                                  pageBuilder: (c, a, sA) {
+                                    return FadeTransition(
+                                      opacity: a,
+                                      child: const DetailCountryScreen(),
+                                    );
+                                  }));
                         },
-                        leading: Text(
-                          state.countriesInfo[index].emoji,
-                          style: const TextStyle(fontSize: 20),
+                        leading: Hero(
+                          tag: state.countriesInfo[index].emoji,
+                          child: Text(
+                            state.countriesInfo[index].emoji,
+                            style: const TextStyle(
+                                fontSize: 20, decoration: TextDecoration.none),
+                          ),
                         ),
                         title: Text(state.countriesInfo[index].name),
                         trailing: Text(state.countriesInfo[index].code),
@@ -51,8 +58,6 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
               );
-            } else if (state.status == FormzStatus.submissionInProgress) {
-              return const Center(child: CircularProgressIndicator.adaptive());
             } else {
               return const SizedBox();
             }
